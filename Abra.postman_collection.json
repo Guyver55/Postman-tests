@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "e5d30211-ea3f-4288-977a-13082d1db85a",
+		"name": "Abra",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cadabra",
+			"item": [
+				{
+					"name": "Get user id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"try {\r",
+									"    pm.environment.set(\"userId\", pm.response.json().args.userId);\r",
+									"} catch(e) {console.log(e);}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://postman-echo.com/get?userId={{newUserId}}",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"get"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{newUserId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update username",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"userId from env is equal to userId from response\", function () {\r",
+									"    pm.expect(parseInt(pm.environment.get(\"userId\"))).to.equal(\r",
+									"        pm.response.json().data.userId\r",
+									"    );\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\": {{userId}}, \"username\": \"Bob\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test of scheme",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var profile = pm.response.json().data.profile;\r",
+									"\r",
+									"var scheme = {\r",
+									"     \"type\": \"object\",\r",
+									"    \"required\": [\"userId\", \"username\"],\r",
+									"    \"properties\": {\r",
+									"        \"userId\": {\"type\": \"integer\"},\r",
+									"        \"username\": {\"type\": \"string\"},\r",
+									"        \"age\": {\"type\": \"integer\"},\r",
+									"        \"scores\": {\r",
+									"            \"type\": \"array\",\r",
+									"            \"items\": {\"type\": \"integer\"}\r",
+									"        },\r",
+									"        \"rating\": {\r",
+									"            \"type\": \"object\",\r",
+									"            \"properties\": {\r",
+									"                \"min\": {\"type\": \"integer\"},\r",
+									"                \"max\": {\"type\": \"integer\"}\r",
+									"            }\r",
+									"        }\r",
+									"    }\r",
+									"};\r",
+									"\r",
+									"pm.test('Schema is valid', function() {\r",
+									"    var isValidScheme = tv4.validate(profile, scheme, true, true);\r",
+									"\r",
+									"    pm.expect(isValidScheme).to.be.true;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"profile\": {\r\n        \"userId\": {{userId}},\r\n        \"username\": \"Bob\",\r\n        \"scores\": [\r\n            1,\r\n            2,\r\n            3,\r\n            4,\r\n            5\r\n        ],\r\n        \"age\": 21,\r\n        \"rating\": {\r\n            \"min\": 20,\r\n            \"max\": 100\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://postman-echo.com/post",
+							"protocol": "https",
+							"host": [
+								"postman-echo",
+								"com"
+							],
+							"path": [
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status is ok, response is json\", function () {",
+							"    pm.response.to.be.ok; ",
+							"    pm.response.to.be.json;",
+							"});"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Alakazam",
+			"item": []
+		}
+	]
+}
